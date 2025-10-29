@@ -1,8 +1,9 @@
 package org.example.mediahandling.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,23 +17,40 @@ public class Media {
     @Column(length = 50, nullable = false)
     private String title;
 
-    @Column(length = 50, nullable = false)
-    private String genre;
+    @Column(length = 255, nullable = false)
+    private String url;
 
-    @Column(length = 50, nullable = false)
+    // Many media can have many genres
+    @ManyToMany
+    @JoinTable(
+            name = "media_genre",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres = new ArrayList<>();
+
+    @Column(nullable = false)
     private LocalDate releaseDate;
 
+    // One media belongs to one artist
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id", nullable = false)
+    @JsonIgnore
     private Artist artist;
 
+    // One media belongs to one mediatype
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_type_id", nullable = false)
     private MediaType mediaType;
 
-    @ManyToMany(fetch = FetchType.LAZY) //There can be many medias in one album or many albums
-    @JoinColumn(name = "album_id")
-    private List<Album> albums;
+    // Many media can be in many albums
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "media_album",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "album_id")
+    )
+    private List<Album> albums = new ArrayList<>();
 
     public Media() {}
 

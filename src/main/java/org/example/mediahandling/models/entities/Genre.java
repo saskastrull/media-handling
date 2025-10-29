@@ -6,17 +6,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Artist {
+public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long genreId;
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getGenreId() {
+        return genreId;
     }
 
-    public Long getId() {
-        return id;
+    public void setGenreId(Long genreId) {
+        this.genreId = genreId;
     }
 }
