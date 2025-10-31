@@ -57,13 +57,5 @@ public class Album {
 
     public void setMediaList(List<Media> mediaList) {
         this.mediaList = mediaList;
-    private Long id;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 }
