@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Album {
@@ -55,5 +57,13 @@ public class Album {
 
     public void setMediaList(List<Media> mediaList) {
         this.mediaList = mediaList;
+    private Long id;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
