@@ -8,26 +8,19 @@ public class MediaType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="media_type_id")
     private Long mediaTypeId;
 
-    @Column(length = 30, unique = true, nullable = false)
-    private String type;
+    @Column(name="media_type_name", length=30, unique=true, nullable=false)
+    private String mediaTypeName;
 
     public MediaType() {}
 
-    public Long getMediaTypeId() {
-        return mediaTypeId;
-    }
+    public Long getMediaTypeId() { return mediaTypeId; }
 
-    public void setMediaTypeId(Long mediaTypeId) {
-        this.mediaTypeId = mediaTypeId;
-    }
+    public void setMediaTypeId(Long mediaTypeId) { this.mediaTypeId = mediaTypeId; }
 
-    public String getType() {
-        return type;
-    }
+    public String getMediaTypeName() { return mediaTypeName; }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public void setMediaTypeName(String mediaTypeName) { this.mediaTypeName = mediaTypeName; }
 }

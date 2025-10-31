@@ -1,22 +1,26 @@
 package org.example.mediahandling.models.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name="genre")
 public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="genre_id")
     private Long genreId;
 
-    public Long getGenreId() {
-        return genreId;
-    }
+    @Column(name="genre_name", length=50, nullable=false)
+    private String genreName;
 
-    public void setGenreId(Long genreId) {
-        this.genreId = genreId;
-    }
+    public Genre() {}
+
+    public Long getGenreId() { return genreId; }
+
+    public void setGenreId(Long genreId) { this.genreId = genreId; }
+
+    public String getGenreName() { return genreName; }
+
+    public void setGenreName(String genreName) { this.genreName = genreName; }
 }

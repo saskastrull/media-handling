@@ -3,13 +3,15 @@ package org.example.mediahandling.models.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="artist")
 public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="artist_id")
     private Long artistId;
 
-    @Column(length = 50, nullable = false)
+    @Column(name="artist_name", length=50, nullable=false)
     private String artistName;
 
     public Artist() {}
