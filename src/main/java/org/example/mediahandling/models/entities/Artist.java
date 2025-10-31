@@ -1,22 +1,32 @@
 package org.example.mediahandling.models.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long artistId;
 
-    public void setId(Long id) {
-        this.id = id;
+    @Column(length = 50, nullable = false)
+    private String artistName;
+
+    public Artist() {}
+
+    public Long getArtistId() {
+        return artistId;
     }
 
-    public Long getId() {
-        return id;
+    public void setArtistId(Long artistId) {
+        this.artistId = artistId;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 }
