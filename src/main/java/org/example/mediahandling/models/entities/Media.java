@@ -1,7 +1,7 @@
 package org.example.mediahandling.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,18 +9,21 @@ import java.util.List;
 @Entity
 @Table(name = "media")
 public class Media {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="media_id")
     private Long mediaId;
 
-    @Column(length = 50, nullable = false)
-    private String title;
+    @Column(name="media_name",length = 50, nullable = false)
+    private String mediaName;
 
     @Column(length = 255, nullable = false)
     private String url;
 
-    // Many media can have many genres
+    @Column(nullable = false)
+    private LocalDate releaseDate;
+
+    // Media can have many genres
     @ManyToMany
     @JoinTable(
             name = "media_genre",
@@ -29,21 +32,21 @@ public class Media {
     )
     private List<Genre> genres = new ArrayList<>();
 
-    @Column(nullable = false)
-    private LocalDate releaseDate;
+    // Media can be shared among artists
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "media_artist",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id")
+    )
+    private List<Artist> artists = new ArrayList<>();
 
-    // One media belongs to one artist
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "artist_id", nullable = false)
-    @JsonIgnore
-    private Artist artist;
-
-    // One media belongs to one mediatype
+    // Media can only have one media type
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_type_id", nullable = false)
     private MediaType mediaType;
 
-    // Many media can be in many albums
+    // Media can appear in different albums
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "media_album",
@@ -62,13 +65,11 @@ public class Media {
         this.mediaId = mediaId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getMediaName() {
+        return mediaName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void setMediaName(String mediaName) { this.mediaName = mediaName;}
 
     public String getUrl() {
         return url;
@@ -94,13 +95,9 @@ public class Media {
         this.releaseDate = releaseDate;
     }
 
-    public Artist getArtist() {
-        return artist;
-    }
+    public List<Artist> getArtists() { return artists; }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
-    }
+    public void setArtists(List<Artist> artists) { this.artists = artists; }
 
     public MediaType getMediaType() {
         return mediaType;

@@ -5,21 +5,29 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 @Entity
+@Table(name="album")
 public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="album_id")
     private Long albumId;
 
-    @Column(nullable = false)
+    @Column(name="album_name", length=50, nullable=false)
     private String albumName;
 
     @Column
     private int year;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "album_artist",
+            joinColumns = @JoinColumn(name = "album_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id")
+    )
+    private List<Artist> artists = new ArrayList<>();
 
     @ManyToMany(mappedBy = "albums", fetch = FetchType.LAZY)
     @JsonIgnore
@@ -27,35 +35,23 @@ public class Album {
 
     public Album() {}
 
-    public Long getAlbumId() {
-        return albumId;
-    }
+    public Long getAlbumId() { return albumId; }
 
-    public void setAlbumId(Long albumId) {
-        this.albumId = albumId;
-    }
+    public void setAlbumId(Long albumId) { this.albumId = albumId; }
 
-    public String getAlbumName() {
-        return albumName;
-    }
+    public String getAlbumName() { return albumName; }
 
-    public void setAlbumName(String albumName) {
-        this.albumName = albumName;
-    }
+    public void setAlbumName(String albumName) { this.albumName = albumName; }
 
-    public int getYear() {
-        return year;
-    }
+    public int getYear() { return year; }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
+    public void setYear(int year) { this.year = year; }
 
-    public List<Media> getMediaList() {
-        return mediaList;
-    }
+    public List<Artist> getArtists() { return artists; }
 
-    public void setMediaList(List<Media> mediaList) {
-        this.mediaList = mediaList;
-    }
+    public void setArtists(List<Artist> artists) { this.artists = artists; }
+
+    public List<Media> getMediaList() { return mediaList; }
+
+    public void setMediaList(List<Media> mediaList) { this.mediaList = mediaList; }
 }
