@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="album")
+@Table(name = "album")
 public class Album {
 
     @Id
@@ -19,7 +19,7 @@ public class Album {
     private String albumName;
 
     @Column
-    private int year;
+    private int album_year;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -43,9 +43,13 @@ public class Album {
 
     public void setAlbumName(String albumName) { this.albumName = albumName; }
 
-    public int getYear() { return year; }
+    public int getAlbum_year() {
+        return album_year;
+    }
 
-    public void setYear(int year) { this.year = year; }
+    public void setAlbum_year(int album_year) {
+        this.album_year = album_year;
+    }
 
     public List<Artist> getArtists() { return artists; }
 
