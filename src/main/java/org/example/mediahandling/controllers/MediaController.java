@@ -19,10 +19,14 @@ public class MediaController {
     @Autowired
     public MediaController(MediaService mediaService) { this.mediaService = mediaService; }
 
-
     @GetMapping("/media")
     public ResponseEntity<List<MediaDTO>> getAllMedia() {
         return new ResponseEntity<>(mediaService.getAllMedia(), HttpStatus.OK);
+    }
+
+    @GetMapping("/media/{id}")
+    public ResponseEntity<MediaDTO> getMediaById(@PathVariable Long id) {
+        return new ResponseEntity<>(mediaService.getMediaById(id), HttpStatus.OK);
     }
 
     @PostMapping("/createmedia")

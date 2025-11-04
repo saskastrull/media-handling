@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MediaService implements MediaServiceInterface {
@@ -33,28 +35,18 @@ public class MediaService implements MediaServiceInterface {
         }
     }
 
-    @Override
     public List<MediaDTO> getAllMedia() {
-        List<Media> mediaList = mediaRepository.findAll();
+        return mediaRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
-        return mediaList.stream().map(media -> {
-            return new MediaDTO(
-                    media.getMediaId(),
-                    media.getMediaName(),
-                    media.getUrl(),
-                    media.getReleaseDate(),
-                    media.getMediaType() != null ? media.getMediaType().getMediaTypeName() : null,
-                    media.getGenres().stream()
-                            .map(Genre::getGenreName)
-                            .toList(),
-                    media.getArtists().stream()
-                            .map(Artist::getArtistName)
-                            .toList(),
-                    media.getAlbums().stream()
-                            .map(Album::getAlbumName)
-                            .toList()
-            );
-        }).toList();
+    public MediaDTO getMediaById(Long id) {
+        Optional<Media> mediaOpt = mediaRepository.findById(id);
+        if (mediaOpt.isEmpty()) {
+            throw new RuntimeException("Media with ID " + id + " not found");
+        }
+        return convertToDTO(mediaOpt.get());
     }
 
     @Override
@@ -87,5 +79,30 @@ public class MediaService implements MediaServiceInterface {
         } catch (Exception e) {
             throw new RuntimeException("Failed to delete media", e);
         }
+    }
+
+    private MediaDTO convertToDTO(Media media) {
+        MediaDTO dto = new MediaDTO();
+        dto.setId(media.getMediaId());
+        dto.setName(media.getMediaName());
+        dto.setUrl(media.getUrl());
+        dto.setReleaseDate(media.getReleaseDate());
+        dto.setMediaType(media.getMediaType().getMediaTypeName());
+
+        // Convert artist names to a simple list of strings
+        dto.setArtists(
+                media.getArtists().stream()
+                        .map(a -> a.getArtistName())
+                        .toList()
+        );
+
+        // Convert genres similarly
+        dto.setGenres(
+                media.getGenres().stream()
+                        .map(g -> g.getGenreName())
+                        .toList()
+        );
+
+        return dto;
     }
 }

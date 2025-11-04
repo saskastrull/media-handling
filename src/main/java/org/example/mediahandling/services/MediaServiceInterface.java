@@ -8,6 +8,7 @@ import java.util.List;
 public interface MediaServiceInterface {
     Media createMedia(Media media);
     List<MediaDTO> getAllMedia();
+    MediaDTO getMediaById(Long id);
     Media updateMedia(Media media);
     void deleteMediaById(Long id);
 }
