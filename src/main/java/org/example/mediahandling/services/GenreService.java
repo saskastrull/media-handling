@@ -14,7 +14,7 @@ public class GenreService implements GenreServiceInterface {
     private final GenreRepository genreRepository;
 
     @Autowired
-    GenreService(GenreRepository genreRepository) {
+    public GenreService(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
 
@@ -58,8 +58,7 @@ public class GenreService implements GenreServiceInterface {
     public void deleteGenreById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Genre ID cannot be null");
-        }
-        else if (!genreRepository.existsById(id)) {
+        } else if (!genreRepository.existsById(id)) {
             throw new ResourceNotFoundException("Genre", "Genre with ID not found", id);
         }
 
