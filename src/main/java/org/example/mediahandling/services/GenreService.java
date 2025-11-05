@@ -47,8 +47,7 @@ public class GenreService implements GenreServiceInterface {
         }
 
         try {
-            Genre updated = genreRepository.save(genre);
-            return updated;
+            return genreRepository.save(genre);
         } catch (Exception e) {
             throw new RuntimeException("Failed to update genre", e);
         }
