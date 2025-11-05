@@ -2,9 +2,6 @@ package org.example.mediahandling.services;
 
 import org.example.mediahandling.exceptions.ResourceNotFoundException;
 import org.example.mediahandling.models.dtos.MediaDTO;
-import org.example.mediahandling.models.entities.Album;
-import org.example.mediahandling.models.entities.Artist;
-import org.example.mediahandling.models.entities.Genre;
 import org.example.mediahandling.models.entities.Media;
 import org.example.mediahandling.repositories.MediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
