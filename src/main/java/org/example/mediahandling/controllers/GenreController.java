@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/mediahandling")
+@RequestMapping("/api/v1/mediahandling")
 public class GenreController {
 
     private final GenreService genreService;
