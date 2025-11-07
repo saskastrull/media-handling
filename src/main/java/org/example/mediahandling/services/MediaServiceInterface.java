@@ -11,4 +11,5 @@ public interface MediaServiceInterface {
     MediaDTO getMediaById(Long id);
     Media updateMedia(Media media);
     void deleteMediaById(Long id);
+    List<MediaDTO> getMediaByArtistId(Long id);
 }

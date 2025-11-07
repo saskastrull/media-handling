@@ -15,7 +15,23 @@ VALUES
     ('Pop'),
     ('Rock'),
     ('Disco'),
-    ('Jazz');
+    ('Jazz'),
+    ('Classical'),
+    ('Hip-Hop'),
+    ('Electronic'),
+    ('Country'),
+    ('Folk'),
+    ('Soul'),
+    ('Metal'),
+    ('Reggae'),
+    ('Blues'),
+    ('Indie'),
+    ('Funk'),
+    ('Alternative'),
+    ('R&B'),
+    ('Latin'),
+    ('Soundtrack'),
+    ('World');
 
 -- ============================
 -- ARTISTS
@@ -24,7 +40,24 @@ INSERT INTO artist (artist_name)
 VALUES
     ('ABBA'),
     ('Lloyd'),
-    ('Chris Rainbow');
+    ('Chris Rainbow'),
+    ('The Rolling Waves'),
+    ('Celina Park'),
+    ('EchoNova'),
+    ('RetroStar'),
+    ('Golden Lights'),
+    ('Mara Sol'),
+    ('Neon Horizon'),
+    ('SoulVibe'),
+    ('Crimson Tide'),
+    ('The Midnight Runners'),
+    ('DJ Solaris'),
+    ('Aurora Blue'),
+    ('Velvet Storm'),
+    ('The Vinyl Poets'),
+    ('Juniper Sky'),
+    ('The High Roads'),
+    ('Eli Navarro');
 
 -- ============================
 -- ALBUMS
@@ -33,56 +66,103 @@ INSERT INTO album (album_name, album_year)
 VALUES
     ('Greatest Hits', 1976),
     ('Smooth Sounds', 2022),
-    ('Dreamtime', 1978);
+    ('Dreamtime', 1978),
+    ('Rolling Thunder', 2019),
+    ('Light of the City', 2021),
+    ('Echoes', 2018),
+    ('Retro Fever', 1983),
+    ('Golden Hour', 2020),
+    ('Ocean Dreams', 2017),
+    ('Electric Skyline', 2023),
+    ('Soul Remedy', 2015),
+    ('Blood Moon', 2022),
+    ('Run Wild', 2019),
+    ('Solar Drift', 2024),
+    ('Northern Lights', 2016),
+    ('Velvet Skies', 2020),
+    ('Poetry in Vinyl', 2018),
+    ('Skyward', 2021),
+    ('Backroads', 2014),
+    ('The Navigator', 2023);
 
 -- ============================
 -- MEDIA
 -- ============================
--- NOTE: media_type_id references the order above (1 = Song, 2 = Podcast, 3 = Movie)
+-- NOTE: media_type_id references (1 = Song, 2 = Podcast, 3 = Movie)
 INSERT INTO media (media_name, url, release_date, media_type_id)
 VALUES
     ('Dancing Queen', 'https://example.com/dancingqueen.mp3', '1976-08-15', 1),
     ('Lay All Your Love On Me', 'https://example.com/layallyourlove.mp3', '1980-07-20', 1),
     ('Midnight Conversations', 'https://example.com/midnightpodcast.mp3', '2022-04-10', 2),
-    ('Rainbow Dreams', 'https://example.com/rainbowdreams.mp3', '1978-09-01', 1);
+    ('Rainbow Dreams', 'https://example.com/rainbowdreams.mp3', '1978-09-01', 1),
+    ('Rolling High', 'https://example.com/rollinghigh.mp3', '2019-03-15', 1),
+    ('City Lights', 'https://example.com/citylights.mp3', '2021-05-11', 1),
+    ('Echoes of Time', 'https://example.com/echoesoftime.mp3', '2018-07-08', 1),
+    ('Retro Nights', 'https://example.com/retronights.mp3', '1983-09-22', 1),
+    ('Golden Hour Podcast', 'https://example.com/goldenhourpodcast.mp3', '2020-10-15', 2),
+    ('Ocean Breeze', 'https://example.com/oceanbreeze.mp3', '2017-06-30', 1),
+    ('Electric Dreams', 'https://example.com/electricdreams.mp3', '2023-02-19', 1),
+    ('Soul Remedy Live', 'https://example.com/soulremedylive.mp3', '2015-11-07', 1),
+    ('Moonlight Drive', 'https://example.com/moonlightdrive.mp3', '2022-01-25', 1),
+    ('Run Wild Documentary', 'https://example.com/runwildmovie.mp4', '2019-09-13', 3),
+    ('Solar Frequencies', 'https://example.com/solarfrequencies.mp3', '2024-03-12', 1),
+    ('Northern Glow', 'https://example.com/northernglow.mp3', '2016-12-01', 1),
+    ('Velvet Skies Acoustic', 'https://example.com/velvetskies.mp3', '2020-02-14', 1),
+    ('Poet’s Soul', 'https://example.com/poetssoul.mp3', '2018-08-09', 1),
+    ('Skyward Episode 1', 'https://example.com/skyward1.mp3', '2021-09-01', 2),
+    ('Backroads Movie', 'https://example.com/backroads.mp4', '2014-05-04', 3);
 
 -- ============================
 -- MANY-TO-MANY RELATIONSHIPS
 -- ============================
--- The IDs below assume sequential auto-generation:
---   media_type → 1–3
---   genre → 1–4
---   artist → 1–3
---   album → 1–3
---   media → 1–4
 
 -- --- MEDIA ⇄ GENRE ---
 INSERT INTO media_genre (media_id, genre_id)
 VALUES
-    (1, 3),  -- Dancing Queen → Disco
-    (2, 1),  -- Lay All Your Love On Me → Pop
-    (3, 4),  -- Midnight Conversations → Jazz
-    (4, 2);  -- Rainbow Dreams → Rock
+    (1, 3), (2, 1), (3, 4), (4, 2),
+    (5, 2), (6, 1), (7, 7), (8, 3),
+    (9, 4), (10, 8), (11, 7), (12, 10),
+    (13, 14), (14, 19), (15, 7), (16, 5),
+    (17, 15), (18, 9), (19, 4), (20, 8);
 
 -- --- MEDIA ⇄ ARTIST ---
 INSERT INTO media_artist (media_id, artist_id)
 VALUES
-    (1, 1),  -- ABBA
-    (2, 1),  -- ABBA
-    (3, 2),  -- Lloyd
-    (4, 3);  -- Chris Rainbow
+    (1, 1), (2, 1), (3, 2), (4, 3),
+    (5, 4), (6, 5), (7, 6), (8, 7),
+    (9, 8), (10, 9), (11, 10), (12, 11),
+    (13, 12), (14, 13), (15, 14), (16, 15),
+    (17, 16), (18, 17), (19, 18), (20, 19);
 
 -- --- MEDIA ⇄ ALBUM ---
 INSERT INTO media_album (media_id, album_id)
 VALUES
-    (1, 1),  -- Dancing Queen → Greatest Hits
-    (2, 1),  -- Lay All Your Love On Me → Greatest Hits
-    (3, 2),  -- Midnight Conversations → Smooth Sounds
-    (4, 3);  -- Rainbow Dreams → Dreamtime
+    (1, 1), (2, 1), (3, 2), (4, 3),
+    (5, 4), (6, 5), (7, 6), (8, 7),
+    (9, 8), (10, 9), (11, 10), (12, 11),
+    (13, 12), (14, 13), (15, 14), (16, 15),
+    (17, 16), (18, 17), (19, 18), (20, 19);
 
 -- --- ALBUM ⇄ ARTIST ---
 INSERT INTO album_artist (album_id, artist_id)
 VALUES
-    (1, 1),  -- Greatest Hits → ABBA
-    (2, 2),  -- Smooth Sounds → Lloyd
-    (3, 3);  -- Dreamtime → Chris Rainbow
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (6, 6),
+    (7, 7),
+    (8, 8),
+    (9, 9),
+    (10, 10),
+    (11, 11),
+    (12, 12),
+    (13, 13),
+    (14, 14),
+    (15, 15),
+    (16, 16),
+    (17, 17),
+    (18, 18),
+    (19, 19),
+    (20, 20);

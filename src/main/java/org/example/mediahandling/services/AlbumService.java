@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AlbumService implements AlbumServiceInterface {
@@ -64,5 +65,16 @@ public class AlbumService implements AlbumServiceInterface {
         } catch (Exception e) {
             throw new RuntimeException("Failed to delete album", e);
         }
+    }
+
+    @Override
+    public List<Album> getAlbumByArtistId(Long id) {
+        List<Album> albumList = albumRepository.findByArtists_ArtistId(id);
+
+        if (albumList.isEmpty()) {
+            throw new ResourceNotFoundException("Album", "No album found for artist ID", id);
+        }
+
+        return albumList;
     }
 }
