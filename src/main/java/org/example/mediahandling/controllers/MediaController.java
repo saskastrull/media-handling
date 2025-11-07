@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/mediahandling")
+@RequestMapping("api/v1/mediahandling")
 public class MediaController {
 
     private final MediaService mediaService;
