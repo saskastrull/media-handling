@@ -4,48 +4,44 @@ import org.example.mediahandling.exceptions.ResourceNotFoundException;
 import org.example.mediahandling.models.dtos.MediaDTO;
 import org.example.mediahandling.models.entities.Media;
 import org.example.mediahandling.repositories.MediaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.mediahandling.mappers.DTOMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class MediaService implements MediaServiceInterface {
 
     private final MediaRepository mediaRepository;
+    private final DTOMapper dtoMapper;
 
-    @Autowired
-    public MediaService(MediaRepository mediaRepository) { this.mediaRepository = mediaRepository; }
+    public MediaService(MediaRepository mediaRepository, DTOMapper dtoMapper) {
+        this.mediaRepository = mediaRepository;
+        this.dtoMapper = dtoMapper;
+    }
 
     @Override
     public Media createMedia(Media media) {
         if (media == null) {
             throw new IllegalArgumentException("Media cannot be null");
         }
-
-        try {
-            return mediaRepository.save(media);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create media", e);
-        }
+        return mediaRepository.save(media);
     }
 
     public List<MediaDTO> getAllMedia() {
         return mediaRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+                .map(dtoMapper::toMediaDTO)
+                .toList();
     }
 
     public MediaDTO getMediaById(Long id) {
-        return mediaRepository.findById(id)
-                .map(this::convertToDTO)
+        Media media = mediaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Media",
                         "Media with ID " + id + " not found",
                         id
                 ));
+        return dtoMapper.toMediaDTO(media);
     }
 
     @Override
@@ -55,66 +51,62 @@ public class MediaService implements MediaServiceInterface {
         }
 
         if (!mediaRepository.existsById(media.getMediaId())) {
-            throw new ResourceNotFoundException("Media", "Media with ID not found", media.getMediaId());
+            throw new ResourceNotFoundException(
+                    "Media",
+                    "Media with ID not found",
+                    media.getMediaId()
+            );
         }
 
-        try {
-            return mediaRepository.save(media);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to update media", e);
-        }
+        return mediaRepository.save(media);
     }
 
     @Override
     public void deleteMediaById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Media ID cannot be null");
-        } else if (!mediaRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Media", "Media with ID not found", id);
         }
-
-        try {
-            mediaRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to delete media", e);
+        if (!mediaRepository.existsById(id)) {
+            throw new ResourceNotFoundException(
+                    "Media",
+                    "Media with ID not found",
+                    id
+            );
         }
+        mediaRepository.deleteById(id);
     }
 
     @Override
-    public List<MediaDTO> getMediaByArtistId(Long id) {
-        List<Media> mediaList = mediaRepository.findByArtists_ArtistId(id);
+    public List<MediaDTO> getMediaByArtistId(Long artistId) {
+        List<Media> mediaList = mediaRepository.findByArtists_ArtistId(artistId);
 
         if (mediaList.isEmpty()) {
-            throw new ResourceNotFoundException("Media", "No media found for artist ID", id);
+            throw new ResourceNotFoundException(
+                    "Media",
+                    "No media found for artist ID",
+                    artistId
+            );
         }
 
         return mediaList.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+                .map(dtoMapper::toMediaDTO)
+                .toList();
     }
 
-    private MediaDTO convertToDTO(Media media) {
-        MediaDTO dto = new MediaDTO();
-        dto.setId(media.getMediaId());
-        dto.setName(media.getMediaName());
-        dto.setUrl(media.getUrl());
-        dto.setReleaseDate(media.getReleaseDate());
-        dto.setMediaType(media.getMediaType().getMediaTypeName());
+    @Override
+    public List<MediaDTO> getMediaByGenreId(Long genreId) {
+        List<Media> mediaList = mediaRepository.findByGenres_GenreId(genreId);
 
-        // Convert artist names to a simple list of strings
-        dto.setArtists(
-                media.getArtists().stream()
-                        .map(a -> a.getArtistName())
-                        .toList()
-        );
+        if (mediaList.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "Media",
+                    "No media found for genre ID",
+                    genreId
+            );
+        }
 
-        // Convert genres similarly
-        dto.setGenres(
-                media.getGenres().stream()
-                        .map(g -> g.getGenreName())
-                        .toList()
-        );
-
-        return dto;
+        return mediaList.stream()
+                .map(dtoMapper::toMediaDTO)
+                .toList();
     }
 }

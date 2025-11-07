@@ -49,4 +49,9 @@ public class MediaController {
     public ResponseEntity<List<MediaDTO>> getMediaByArtistId(@PathVariable Long id) {
         return new ResponseEntity<>(mediaService.getMediaByArtistId(id), HttpStatus.OK);
     }
+
+    @GetMapping("/mediabygenre/{id}")
+    public ResponseEntity<List<MediaDTO>> getMediaByGenreId(@PathVariable Long id) {
+        return new ResponseEntity<>(mediaService.getMediaByGenreId(id), HttpStatus.OK);
+    }
 }

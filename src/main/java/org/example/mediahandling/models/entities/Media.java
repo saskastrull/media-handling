@@ -46,14 +46,9 @@ public class Media {
     @JoinColumn(name = "media_type_id", nullable = false)
     private MediaType mediaType;
 
-    // Media can appear in different albums
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "media_album",
-            joinColumns = @JoinColumn(name = "media_id"),
-            inverseJoinColumns = @JoinColumn(name = "album_id")
-    )
-    private List<Album> albums = new ArrayList<>();
+    // Relationship to albums
+    @OneToMany(mappedBy = "media", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AlbumTrack> albumTracks = new ArrayList<>();
 
     public Media() {}
 
@@ -75,9 +70,7 @@ public class Media {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+    public void setUrl(String url) { this.url = url; }
 
     public List<Genre> getGenres() {
         return genres;
@@ -107,11 +100,7 @@ public class Media {
         this.mediaType = mediaType;
     }
 
-    public List<Album> getAlbums() {
-        return albums;
-    }
+    public List<AlbumTrack> getAlbumTracks() { return albumTracks; }
 
-    public void setAlbums(List<Album> albums) {
-        this.albums = albums;
-    }
+    public void setAlbumTracks(List<AlbumTrack> albumTracks) { this.albumTracks = albumTracks; }
 }
