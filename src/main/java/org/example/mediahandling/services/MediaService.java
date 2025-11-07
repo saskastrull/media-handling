@@ -39,11 +39,13 @@ public class MediaService implements MediaServiceInterface {
     }
 
     public MediaDTO getMediaById(Long id) {
-        Optional<Media> mediaOpt = mediaRepository.findById(id);
-        if (mediaOpt.isEmpty()) {
-            throw new RuntimeException("Media with ID " + id + " not found");
-        }
-        return convertToDTO(mediaOpt.get());
+        return mediaRepository.findById(id)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Media",
+                        "Media with ID " + id + " not found",
+                        id
+                ));
     }
 
     @Override
