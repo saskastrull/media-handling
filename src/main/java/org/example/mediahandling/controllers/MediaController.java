@@ -44,4 +44,9 @@ public class MediaController {
         mediaService.deleteMediaById(id);
         return new ResponseEntity<>("Media with id " + id + " deleted", HttpStatus.OK);
     }
+
+    @GetMapping("/mediabyartist/{id}")
+    public ResponseEntity<List<MediaDTO>> getMediaByArtistId(@PathVariable Long id) {
+        return new ResponseEntity<>(mediaService.getMediaByArtistId(id), HttpStatus.OK);
+    }
 }

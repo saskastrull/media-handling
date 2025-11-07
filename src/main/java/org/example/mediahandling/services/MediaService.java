@@ -78,6 +78,19 @@ public class MediaService implements MediaServiceInterface {
         }
     }
 
+    @Override
+    public List<MediaDTO> getMediaByArtistId(Long id) {
+        List<Media> mediaList = mediaRepository.findByArtists_ArtistId(id);
+
+        if (mediaList.isEmpty()) {
+            throw new ResourceNotFoundException("Media", "No media found for artist ID", id);
+        }
+
+        return mediaList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     private MediaDTO convertToDTO(Media media) {
         MediaDTO dto = new MediaDTO();
         dto.setId(media.getMediaId());

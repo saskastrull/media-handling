@@ -38,4 +38,9 @@ public class AlbumController {
         albumService.deleteAlbumById(id);
         return new ResponseEntity<>("Album with id " + id + " deleted", HttpStatus.OK);
     }
+
+    @GetMapping("/albumbyartist/{id}")
+    public ResponseEntity<List<Album>> getAlbumByArtistId(@PathVariable Long id) {
+        return new ResponseEntity<>(albumService.getAlbumByArtistId(id), HttpStatus.OK);
+    }
 }
