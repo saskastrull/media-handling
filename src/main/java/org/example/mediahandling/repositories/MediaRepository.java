@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
     List<Media> findByArtists_ArtistId(Long artistId);
+    List<Media> findByGenres_GenreId(Long genreId);
 }

@@ -88,7 +88,6 @@ VALUES
 -- ============================
 -- MEDIA
 -- ============================
--- NOTE: media_type_id references (1 = Song, 2 = Podcast, 3 = Movie)
 INSERT INTO media (media_name, url, release_date, media_type_id)
 VALUES
     ('Dancing Queen', 'https://example.com/dancingqueen.mp3', '1976-08-15', 1),
@@ -113,10 +112,10 @@ VALUES
     ('Backroads Movie', 'https://example.com/backroads.mp4', '2014-05-04', 3);
 
 -- ============================
--- MANY-TO-MANY RELATIONSHIPS
+-- RELATIONSHIPS
 -- ============================
 
--- --- MEDIA ⇄ GENRE ---
+-- --- MEDIA / GENRE ---
 INSERT INTO media_genre (media_id, genre_id)
 VALUES
     (1, 3), (2, 1), (3, 4), (4, 2),
@@ -125,7 +124,7 @@ VALUES
     (13, 14), (14, 19), (15, 7), (16, 5),
     (17, 15), (18, 9), (19, 4), (20, 8);
 
--- --- MEDIA ⇄ ARTIST ---
+-- --- MEDIA / ARTIST ---
 INSERT INTO media_artist (media_id, artist_id)
 VALUES
     (1, 1), (2, 1), (3, 2), (4, 3),
@@ -134,16 +133,7 @@ VALUES
     (13, 12), (14, 13), (15, 14), (16, 15),
     (17, 16), (18, 17), (19, 18), (20, 19);
 
--- --- MEDIA ⇄ ALBUM ---
-INSERT INTO media_album (media_id, album_id)
-VALUES
-    (1, 1), (2, 1), (3, 2), (4, 3),
-    (5, 4), (6, 5), (7, 6), (8, 7),
-    (9, 8), (10, 9), (11, 10), (12, 11),
-    (13, 12), (14, 13), (15, 14), (16, 15),
-    (17, 16), (18, 17), (19, 18), (20, 19);
-
--- --- ALBUM ⇄ ARTIST ---
+-- --- ALBUM / ARTIST ---
 INSERT INTO album_artist (album_id, artist_id)
 VALUES
     (1, 1),
@@ -166,3 +156,109 @@ VALUES
     (18, 18),
     (19, 19),
     (20, 20);
+
+-- ============================
+-- ALBUM TRACKS
+-- ============================
+INSERT INTO album_track (album_id, media_id, track_number)
+VALUES
+    -- Greatest Hits (1)
+    (1, 1, 1),
+    (1, 2, 2),
+    (1, 4, 3),
+    (1, 5, 4),
+
+    -- Smooth Sounds (2)
+    (2, 3, 1),
+    (2, 6, 2),
+    (2, 11, 3),
+
+    -- Dreamtime (3)
+    (3, 4, 1),
+    (3, 12, 2),
+    (3, 18, 3),
+
+    -- Rolling Thunder (4)
+    (4, 5, 1),
+    (4, 7, 2),
+    (4, 14, 3),
+
+    -- Light of the City (5)
+    (5, 6, 1),
+    (5, 10, 2),
+    (5, 19, 3),
+
+    -- Echoes (6)
+    (6, 7, 1),
+    (6, 15, 2),
+    (6, 17, 3),
+
+    -- Retro Fever (7)
+    (7, 8, 1),
+    (7, 11, 2),
+    (7, 2, 3),
+
+    -- Golden Hour (8)
+    (8, 9, 1),
+    (8, 13, 2),
+    (8, 16, 3),
+
+    -- Ocean Dreams (9)
+    (9, 10, 1),
+    (9, 4, 2),
+    (9, 12, 3),
+
+    -- Electric Skyline (10)
+    (10, 11, 1),
+    (10, 15, 2),
+    (10, 14, 3),
+
+    -- Soul Remedy (11)
+    (11, 12, 1),
+    (11, 1, 2),
+    (11, 18, 3),
+
+    -- Blood Moon (12)
+    (12, 13, 1),
+    (12, 5, 2),
+    (12, 16, 3),
+
+    -- Run Wild (13)
+    (13, 14, 1),
+    (13, 15, 2),
+    (13, 19, 3),
+
+    -- Solar Drift (14)
+    (14, 15, 1),
+    (14, 3, 2),
+    (14, 20, 3),
+
+    -- Northern Lights (15)
+    (15, 16, 1),
+    (15, 17, 2),
+    (15, 2, 3),
+
+    -- Velvet Skies (16)
+    (16, 17, 1),
+    (16, 18, 2),
+    (16, 6, 3),
+
+    -- Poetry in Vinyl (17)
+    (17, 18, 1),
+    (17, 1, 2),
+    (17, 11, 3),
+
+    -- Skyward (18)
+    (18, 19, 1),
+    (18, 3, 2),
+    (18, 12, 3),
+
+    -- Backroads (19)
+    (19, 20, 1),
+    (19, 14, 2),
+    (19, 7, 3),
+
+    -- The Navigator (20)
+    (20, 2, 1),
+    (20, 5, 2),
+    (20, 10, 3);

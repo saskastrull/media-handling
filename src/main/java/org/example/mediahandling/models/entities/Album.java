@@ -1,6 +1,5 @@
 package org.example.mediahandling.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -29,9 +28,9 @@ public class Album {
     )
     private List<Artist> artists = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "albums", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Media> mediaList = new ArrayList<>();
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("trackNumber ASC")
+    private List<AlbumTrack> albumTracks = new ArrayList<>();
 
     public Album() {}
 
@@ -55,7 +54,7 @@ public class Album {
 
     public void setArtists(List<Artist> artists) { this.artists = artists; }
 
-    public List<Media> getMediaList() { return mediaList; }
+    public List<AlbumTrack> getAlbumTracks() { return albumTracks; }
 
-    public void setMediaList(List<Media> mediaList) { this.mediaList = mediaList; }
+    public void setAlbumTracks(List<AlbumTrack> albumTracks) { this.albumTracks = albumTracks; }
 }

@@ -1,80 +1,60 @@
 package org.example.mediahandling.services;
 
 import org.example.mediahandling.exceptions.ResourceNotFoundException;
+import org.example.mediahandling.models.dtos.AlbumDTO;
 import org.example.mediahandling.models.entities.Album;
 import org.example.mediahandling.repositories.AlbumRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.mediahandling.mappers.DTOMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AlbumService implements AlbumServiceInterface {
 
     private final AlbumRepository albumRepository;
+    private final DTOMapper dtoMapper;
 
-    @Autowired
-    public AlbumService(AlbumRepository albumRepository) { this.albumRepository = albumRepository; }
+    public AlbumService(AlbumRepository albumRepository, DTOMapper dtoMapper) {
+        this.albumRepository = albumRepository;
+        this.dtoMapper = dtoMapper;
+    }
 
-    @Override
     public Album createAlbum(Album album) {
-        if (album == null) {
-            throw new IllegalArgumentException("Album cannot be null");
-        }
-
-        try {
-            return albumRepository.save(album);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create album", e);
-        }
+        if (album == null) throw new IllegalArgumentException("Album cannot be null");
+        return albumRepository.save(album);
     }
 
-    @Override
-    public List<Album> getAllAlbums() {
-        return albumRepository.findAll();
+    public List<AlbumDTO> getAllAlbums() {
+        return albumRepository.findAll().stream()
+                .map(dtoMapper::toAlbumDTO)
+                .toList();
     }
 
-    @Override
     public Album updateAlbum(Album album) {
-        if (album == null || album.getAlbumId() == null) {
-            throw new IllegalArgumentException("Album or Album ID cannot be null");
-        }
-
-        if (!albumRepository.existsById(album.getAlbumId())) {
-            throw new ResourceNotFoundException("Album", "Album with ID not found", album.getAlbumId());
-        }
-
-        try {
-            return albumRepository.save(album);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to update album", e);
-        }
+        if (album == null || album.getAlbumId() == null)
+            throw new IllegalArgumentException("Album or ID cannot be null");
+        if (!albumRepository.existsById(album.getAlbumId()))
+            throw new ResourceNotFoundException("Album", "Album not found", album.getAlbumId());
+        return albumRepository.save(album);
     }
 
-    @Override
     public void deleteAlbumById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("Album ID cannot be null");
-        } else if (!albumRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Album", "Album with ID not found", id);
-        }
-
-        try {
-            albumRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to delete album", e);
-        }
+        if (id == null) throw new IllegalArgumentException("Album ID cannot be null");
+        if (!albumRepository.existsById(id))
+            throw new ResourceNotFoundException("Album", "Album not found", id);
+        albumRepository.deleteById(id);
     }
 
-    @Override
-    public List<Album> getAlbumByArtistId(Long id) {
-        List<Album> albumList = albumRepository.findByArtists_ArtistId(id);
+    public List<AlbumDTO> getAlbumByArtistId(Long artistId) {
+        List<Album> albumList = albumRepository.findByArtists_ArtistId(artistId);
 
         if (albumList.isEmpty()) {
-            throw new ResourceNotFoundException("Album", "No album found for artist ID", id);
+            throw new ResourceNotFoundException("Album", "No albums found for artist ID", artistId);
         }
 
-        return albumList;
+        return albumList.stream()
+                .map(dtoMapper::toAlbumDTO)
+                .toList();
     }
 }
