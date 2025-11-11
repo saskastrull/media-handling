@@ -9,7 +9,7 @@ public interface MediaServiceInterface {
     Media createMedia(Media media);
     List<MediaDTO> getAllMedia();
     MediaDTO getMediaById(Long id);
-    Media updateMedia(Media media);
+    MediaDTO updateMedia(Media media);
     void deleteMediaById(Long id);
     List<MediaDTO> getMediaByArtistId(Long id);
     List<MediaDTO> getMediaByGenreId(Long id);

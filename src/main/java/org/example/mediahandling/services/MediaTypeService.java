@@ -1,5 +1,6 @@
 package org.example.mediahandling.services;
 
+import jakarta.transaction.Transactional;
 import org.example.mediahandling.exceptions.ResourceNotFoundException;
 import org.example.mediahandling.models.entities.MediaType;
 import org.example.mediahandling.repositories.MediaTypeRepository;
@@ -16,6 +17,7 @@ public class MediaTypeService implements MediaTypeServiceInterface {
     @Autowired
     public MediaTypeService(MediaTypeRepository mediaTypeRepository) { this.mediaTypeRepository = mediaTypeRepository; }
 
+    @Transactional
     @Override
     public MediaType createMediaType(MediaType mediaType) {
         if (mediaType == null) {
@@ -32,6 +34,7 @@ public class MediaTypeService implements MediaTypeServiceInterface {
     @Override
     public List<MediaType> getAllMediaTypes() { return mediaTypeRepository.findAll(); }
 
+    @Transactional
     @Override
     public MediaType updateMediaType(MediaType mediaType) {
         if (mediaType == null || mediaType.getMediaTypeId() == null) {

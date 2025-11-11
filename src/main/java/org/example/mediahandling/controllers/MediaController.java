@@ -35,7 +35,7 @@ public class MediaController {
     }
 
     @PutMapping("/updatemedia")
-    public ResponseEntity<Media> updateMedia(@RequestBody Media media) {
+    public ResponseEntity<MediaDTO> updateMedia(@RequestBody Media media) {
         return new ResponseEntity<>(mediaService.updateMedia(media), HttpStatus.OK);
     }
 
