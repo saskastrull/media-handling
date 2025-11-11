@@ -2,12 +2,16 @@ package org.example.mediahandling.services;
 
 import org.example.mediahandling.exceptions.ResourceNotFoundException;
 import org.example.mediahandling.models.dtos.MediaDTO;
+import org.example.mediahandling.models.entities.Genre;
 import org.example.mediahandling.models.entities.Media;
 import org.example.mediahandling.repositories.MediaRepository;
 import org.example.mediahandling.mappers.DTOMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class MediaService implements MediaServiceInterface {
@@ -108,5 +112,20 @@ public class MediaService implements MediaServiceInterface {
         return mediaList.stream()
                 .map(dtoMapper::toMediaDTO)
                 .toList();
+    }
+
+    // Used to fetch genres for recommendations service
+    @Override
+    public Map<Long, List<String>> getGenresByMediaIds(List<Long> mediaIds) {
+
+        Map<Long, List<String>> genresByMediaIds = new HashMap<>();
+
+        List<Media> medias = mediaRepository.findAllById(mediaIds);
+
+        for(Media media : medias) {
+            List<String> genreNames = media.getGenres().stream().map(genre -> genre.getGenreName()).toList();
+            genresByMediaIds.put(media.getMediaId(), genreNames);
+        }
+        return genresByMediaIds;
     }
 }

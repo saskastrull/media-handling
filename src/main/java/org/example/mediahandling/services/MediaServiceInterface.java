@@ -4,6 +4,7 @@ import org.example.mediahandling.models.dtos.MediaDTO;
 import org.example.mediahandling.models.entities.Media;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MediaServiceInterface {
     Media createMedia(Media media);
@@ -13,4 +14,7 @@ public interface MediaServiceInterface {
     void deleteMediaById(Long id);
     List<MediaDTO> getMediaByArtistId(Long id);
     List<MediaDTO> getMediaByGenreId(Long id);
+
+    //Used to fetch genres for recommendations service
+    Map<Long, List<String>> getGenresByMediaIds(List<Long> mediaIds);
 }
