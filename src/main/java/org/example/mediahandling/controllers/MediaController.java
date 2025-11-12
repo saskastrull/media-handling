@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/mediahandling")
@@ -53,5 +54,11 @@ public class MediaController {
     @GetMapping("/mediabygenre/{id}")
     public ResponseEntity<List<MediaDTO>> getMediaByGenreId(@PathVariable Long id) {
         return new ResponseEntity<>(mediaService.getMediaByGenreId(id), HttpStatus.OK);
+    }
+
+    //Endpoint for fetching genres to use in recommendations service
+    @GetMapping("/genresbymediaids")
+    public ResponseEntity<Map<Long, List<String>>> getGenresByMediaIds(@RequestParam List<Long> mediaIds) {
+        return new ResponseEntity<>(mediaService.getGenresByMediaIds(mediaIds), HttpStatus.OK);
     }
 }
