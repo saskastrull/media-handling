@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Utility class used for mapping the Media and Album JPA entities to DTOs.
+ */
 @Component
 public class DTOMapper {
 

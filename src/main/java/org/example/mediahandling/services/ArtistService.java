@@ -1,5 +1,6 @@
 package org.example.mediahandling.services;
 
+import jakarta.transaction.Transactional;
 import org.example.mediahandling.exceptions.ResourceNotFoundException;
 import org.example.mediahandling.models.entities.Artist;
 import org.example.mediahandling.repositories.ArtistRepository;
@@ -16,6 +17,7 @@ public class ArtistService implements ArtistServiceInterface {
     @Autowired
     public ArtistService(ArtistRepository artistRepository) { this.artistRepository = artistRepository; }
 
+    @Transactional
     @Override
     public Artist createArtist(Artist artist) {
         if (artist == null) {
@@ -34,6 +36,7 @@ public class ArtistService implements ArtistServiceInterface {
         return artistRepository.findAll();
     }
 
+    @Transactional
     @Override
     public Artist updateArtist(Artist artist) {
         if (artist == null || artist.getArtistId() == null) {

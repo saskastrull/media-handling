@@ -1,5 +1,6 @@
 package org.example.mediahandling.services;
 
+import jakarta.transaction.Transactional;
 import org.example.mediahandling.exceptions.ResourceNotFoundException;
 import org.example.mediahandling.models.entities.Genre;
 import org.example.mediahandling.repositories.GenreRepository;
@@ -18,6 +19,7 @@ public class GenreService implements GenreServiceInterface {
         this.genreRepository = genreRepository;
     }
 
+    @Transactional
     @Override
     public Genre createGenre(Genre genre) {
         if (genre == null) {
@@ -36,6 +38,7 @@ public class GenreService implements GenreServiceInterface {
         return genreRepository.findAll();
     }
 
+    @Transactional
     @Override
     public Genre updateGenre(Genre genre) {
         if (genre == null || genre.getGenreId() == null) {

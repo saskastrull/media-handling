@@ -1,10 +1,13 @@
 package org.example.mediahandling.services;
 
+import jakarta.transaction.Transactional;
 import org.example.mediahandling.exceptions.ResourceNotFoundException;
 import org.example.mediahandling.models.dtos.MediaDTO;
 import org.example.mediahandling.models.entities.Media;
+import org.example.mediahandling.models.entities.MediaType;
 import org.example.mediahandling.repositories.MediaRepository;
 import org.example.mediahandling.mappers.DTOMapper;
+import org.example.mediahandling.repositories.MediaTypeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,13 +16,18 @@ import java.util.List;
 public class MediaService implements MediaServiceInterface {
 
     private final MediaRepository mediaRepository;
+    private final MediaTypeRepository mediaTypeRepository;
     private final DTOMapper dtoMapper;
 
-    public MediaService(MediaRepository mediaRepository, DTOMapper dtoMapper) {
+    public MediaService(MediaRepository mediaRepository,
+                        MediaTypeRepository mediaTypeRepository,
+                        DTOMapper dtoMapper) {
         this.mediaRepository = mediaRepository;
+        this.mediaTypeRepository = mediaTypeRepository;
         this.dtoMapper = dtoMapper;
     }
 
+    @Transactional
     @Override
     public Media createMedia(Media media) {
         if (media == null) {
@@ -44,21 +52,56 @@ public class MediaService implements MediaServiceInterface {
         return dtoMapper.toMediaDTO(media);
     }
 
+    @Transactional
     @Override
-    public Media updateMedia(Media media) {
+    public MediaDTO updateMedia(Media media) {
         if (media == null || media.getMediaId() == null) {
             throw new IllegalArgumentException("Media or Media ID cannot be null");
         }
 
-        if (!mediaRepository.existsById(media.getMediaId())) {
-            throw new ResourceNotFoundException(
-                    "Media",
-                    "Media with ID not found",
-                    media.getMediaId()
-            );
+        Media existingMedia = mediaRepository.findById(media.getMediaId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Media",
+                        "Media with ID not found",
+                        media.getMediaId()
+                ));
+
+        // Check for any new data
+        if (media.getMediaName() != null && !media.getMediaName().isBlank()) {
+            existingMedia.setMediaName(media.getMediaName());
         }
 
-        return mediaRepository.save(media);
+        if (media.getUrl() != null && !media.getUrl().isBlank()) {
+            existingMedia.setUrl(media.getUrl());
+        }
+
+        if (media.getReleaseDate() != null) {
+            existingMedia.setReleaseDate(media.getReleaseDate());
+        }
+
+        if (media.getMediaType() != null && media.getMediaType().getMediaTypeId() != null) {
+            MediaType type = mediaTypeRepository.findById(media.getMediaType().getMediaTypeId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "MediaType",
+                            "MediaType with ID not found",
+                            media.getMediaType().getMediaTypeId()
+                    ));
+            existingMedia.setMediaType(type);
+        }
+
+        if (media.getGenres() != null && !media.getGenres().isEmpty()) {
+            existingMedia.setGenres(media.getGenres());
+        }
+
+        if (media.getArtists() != null && !media.getArtists().isEmpty()) {
+            existingMedia.setArtists(media.getArtists());
+        }
+
+        if (media.getAlbumTracks() != null && !media.getAlbumTracks().isEmpty()) {
+            existingMedia.setAlbumTracks(media.getAlbumTracks());
+        }
+
+        return dtoMapper.toMediaDTO(mediaRepository.save(existingMedia));
     }
 
     @Override
