@@ -141,6 +141,11 @@ public class MediaService implements MediaServiceInterface {
     }
 
     @Override
+    public Long getGenreIdByMediaId(Long id) {
+        return mediaRepository.getGenreIdByMediaId(id);
+    }
+
+    @Override
     public List<MediaDTO> getMediaByGenreId(Long genreId) {
         List<Media> mediaList = mediaRepository.findByGenres_GenreId(genreId);
 
@@ -156,6 +161,9 @@ public class MediaService implements MediaServiceInterface {
                 .map(dtoMapper::toMediaDTO)
                 .toList();
     }
+
+
+
 
     // Used to fetch genres for recommendations service
     @Override

@@ -56,6 +56,11 @@ public class MediaController {
         return new ResponseEntity<>(mediaService.getMediaByGenreId(id), HttpStatus.OK);
     }
 
+    @GetMapping("/genreidbymediaid/{id}")
+    public ResponseEntity<Long> getGenreIdByMediaId(@PathVariable Long id) {
+        return new ResponseEntity<>(mediaService.getGenreIdByMediaId(id), HttpStatus.OK);
+    }
+
     //Endpoint for fetching genres to use in recommendations service
     @GetMapping("/genresbymediaids")
     public ResponseEntity<Map<Long, List<String>>> getGenresByMediaIds(@RequestParam List<Long> mediaIds) {

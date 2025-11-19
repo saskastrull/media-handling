@@ -13,6 +13,7 @@ public interface MediaServiceInterface {
     MediaDTO updateMedia(Media media);
     void deleteMediaById(Long id);
     List<MediaDTO> getMediaByArtistId(Long id);
+    Long getGenreIdByMediaId(Long id);
     List<MediaDTO> getMediaByGenreId(Long id);
 
     //Used to fetch genres for recommendations service
