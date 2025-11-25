@@ -6,6 +6,7 @@ import org.example.mediahandling.services.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,16 +31,19 @@ public class MediaController {
         return new ResponseEntity<>(mediaService.getMediaById(id), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('edufy_ADMIN')")
     @PostMapping("/createmedia")
     public ResponseEntity<Media> createMedia(@RequestBody Media media) {
         return new ResponseEntity<>(mediaService.createMedia(media), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('edufy_ADMIN')")
     @PutMapping("/updatemedia")
     public ResponseEntity<MediaDTO> updateMedia(@RequestBody Media media) {
         return new ResponseEntity<>(mediaService.updateMedia(media), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('edufy_ADMIN')")
     @DeleteMapping("/deletemedia/{id}")
     public ResponseEntity<String> removeMedia(@PathVariable("id") Long id) {
         mediaService.deleteMediaById(id);

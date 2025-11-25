@@ -5,6 +5,7 @@ import org.example.mediahandling.services.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,16 +24,19 @@ public class ArtistController {
         return new ResponseEntity<>(artistService.getAllArtists(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('edufy_ADMIN')")
     @PostMapping("/createartist")
     public ResponseEntity<Artist> createArtist(@RequestBody Artist artist) {
         return new ResponseEntity<>(artistService.createArtist(artist), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('edufy_ADMIN')")
     @PutMapping("/updateartist")
     public ResponseEntity<Artist> updateArtist(@RequestBody Artist artist) {
         return new ResponseEntity<>(artistService.updateArtist(artist), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('edufy_ADMIN')")
     @DeleteMapping("/deleteartist/{id}")
     public ResponseEntity<String> removeArtist(@PathVariable("id") Long id) {
         artistService.deleteArtistById(id);
