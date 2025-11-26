@@ -24,19 +24,19 @@ public class MediaTypeController {
         return new ResponseEntity<>(mediaTypeService.getAllMediaTypes(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('edufy_ADMIN')")
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PostMapping("/createmediatype")
     public ResponseEntity<MediaType> createMediaType(@RequestBody MediaType mediaType) {
         return new ResponseEntity<>(mediaTypeService.createMediaType(mediaType), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('edufy_ADMIN')")
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PutMapping("/updatemediatype")
     public ResponseEntity<MediaType> updateMediaType(@RequestBody MediaType mediaType) {
         return new ResponseEntity<>(mediaTypeService.updateMediaType(mediaType), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('edufy_ADMIN')")
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @DeleteMapping("/deletemediatype/{id}")
     public ResponseEntity<String> removeMediaType(@PathVariable("id") Long id) {
         mediaTypeService.deleteMediaTypeById(id);

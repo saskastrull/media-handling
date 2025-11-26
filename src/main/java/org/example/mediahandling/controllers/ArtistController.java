@@ -24,19 +24,19 @@ public class ArtistController {
         return new ResponseEntity<>(artistService.getAllArtists(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('edufy_ADMIN')")
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PostMapping("/createartist")
     public ResponseEntity<Artist> createArtist(@RequestBody Artist artist) {
         return new ResponseEntity<>(artistService.createArtist(artist), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('edufy_ADMIN')")
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PutMapping("/updateartist")
     public ResponseEntity<Artist> updateArtist(@RequestBody Artist artist) {
         return new ResponseEntity<>(artistService.updateArtist(artist), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('edufy_ADMIN')")
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @DeleteMapping("/deleteartist/{id}")
     public ResponseEntity<String> removeArtist(@PathVariable("id") Long id) {
         artistService.deleteArtistById(id);

@@ -24,19 +24,19 @@ public class GenreController {
         return new ResponseEntity<>(genreService.getAllGenres(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('edufy_ADMIN')")
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PostMapping("/creategenre")
     public ResponseEntity<Genre> createGenre(@RequestBody Genre genre) {
         return new ResponseEntity<>(genreService.createGenre(genre), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('edufy_ADMIN')")
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PutMapping("/updategenre")
     public ResponseEntity<Genre> updateGenre(@RequestBody Genre genre) {
         return new ResponseEntity<>(genreService.updateGenre(genre), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('edufy_ADMIN')")
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @DeleteMapping("/deletegenre/{id}")
     public ResponseEntity<String> removeGenre(@PathVariable("id") Long id) {
         genreService.deleteGenreById(id);
