@@ -8,6 +8,7 @@ import org.example.mediahandling.services.AlbumTrackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,16 +30,19 @@ public class AlbumController {
         return new ResponseEntity<>(albumService.getAllAlbums(), HttpStatus.OK);
     }
 
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PostMapping("/createalbum")
     public ResponseEntity<Album> createAlbum(@RequestBody Album album) {
         return new ResponseEntity<>(albumService.createAlbum(album), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PutMapping("/updatealbum")
     public ResponseEntity<Album> updateAlbum(@RequestBody Album album) {
         return new ResponseEntity<>(albumService.updateAlbum(album), HttpStatus.OK);
     }
 
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @DeleteMapping("/deletealbum/{id}")
     public ResponseEntity<String> removeAlbum(@PathVariable("id") Long id) {
         albumService.deleteAlbumById(id);

@@ -6,6 +6,9 @@ import org.example.mediahandling.services.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,18 +33,23 @@ public class MediaController {
         return new ResponseEntity<>(mediaService.getMediaById(id), HttpStatus.OK);
     }
 
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PostMapping("/createmedia")
     public ResponseEntity<Media> createMedia(@RequestBody Media media) {
         return new ResponseEntity<>(mediaService.createMedia(media), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @PutMapping("/updatemedia")
     public ResponseEntity<MediaDTO> updateMedia(@RequestBody Media media) {
         return new ResponseEntity<>(mediaService.updateMedia(media), HttpStatus.OK);
     }
 
+    @PreAuthorize("@roleChecker.hasRole(authentication, 'edufy_ADMIN')")
     @DeleteMapping("/deletemedia/{id}")
     public ResponseEntity<String> removeMedia(@PathVariable("id") Long id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Authorities → " + auth.getAuthorities());
         mediaService.deleteMediaById(id);
         return new ResponseEntity<>("Media with id " + id + " deleted", HttpStatus.OK);
     }
